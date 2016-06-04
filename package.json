@@ -4,7 +4,7 @@
   "main": "dist/obseriot.js",
   "jsnext:main": "dist/obseriot.es6.js",
   "scripts": {
-    "test": "karma start",
+    "test": "karma start config/karma.conf.js",
     "bld": "node config/rollup.build.js"
   },
   "author": "Hiroyuki Tanaka",

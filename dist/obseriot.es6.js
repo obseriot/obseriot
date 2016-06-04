@@ -169,6 +169,7 @@ obseriot.notify = function ( e ) {
     if ( ! e.handler ) return
     var t = [ e.handler.name ],
     f = e.handler.action.apply( this, arg )
+    if ( f.constructor.name !== 'Array' ) f = [ f ]
     Array.prototype.push.apply( t, f )
     this.trigger.apply( this, t )
 }

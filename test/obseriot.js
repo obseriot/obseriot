@@ -4,6 +4,33 @@ var test = {
         action : function ( a1, a2, a3, a4, a5 ) {
             return [ 'This is a test', a1, a2, a3, a4, a5 ]
         }
+    },
+    string : {
+        handler : {
+            name : 'string',
+            equal : 'string',
+            action : function ( arg ) {
+                return test.string.handler.equal
+            }
+        }
+    },
+    object : {
+        handler : {
+            name : 'object',
+            equal : { item : 'object' },
+            action : function ( arg ) {
+                return test.object.handler.equal
+            }
+        }
+    },
+    function : {
+        handler : {
+            name : 'function',
+            equal : function () { return 'function' },
+            action : function ( arg ) {
+                return test.function.handler.equal
+            }
+        }
     }
 }
 
@@ -29,6 +56,22 @@ describe( 'obseriot specs', function () {
             done()
         } )
         obseriot.notify( test, args[0], args[1], args[2], args[3], args[4] )
+    } )
+
+    it( 'Action returns value is whatever fine', function ( done ) {
+        obseriot.listen( test.string, function ( arg ) {
+            expect( arg ).to.eql( test.string.handler.equal )
+        } )
+        obseriot.listen( test.object, function ( arg ) {
+            expect( arg ).to.eql( test.object.handler.equal )
+        } )
+        obseriot.listen( test.function, function ( arg ) {
+            expect( arg ).to.eql( test.function.handler.equal )
+            done()
+        } )
+        obseriot.notify( test.string )
+        obseriot.notify( test.object )
+        obseriot.notify( test.function )
     } )
 
 } )
