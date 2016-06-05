@@ -39,6 +39,6 @@ obseriot.listen( url.change, function ( ...arg ) {
     console.log( arg ) // => 'shop', 1, 'detail'
 } )
 
-// obseriot.listen( event object , parameters )
+// obseriot.notify( event object , parameters )
 obseriot.notify( url.change, 'shop', 1, 'detail' )
 ```
