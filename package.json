@@ -8,7 +8,7 @@
     "bld": "node config/rollup.build.js"
   },
   "author": "Hiroyuki Tanaka",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "riot-observable": "3.0.0-alpha.1"
   },
