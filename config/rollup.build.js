@@ -12,7 +12,7 @@ rollup
     ]
 } )
 .then( bundle => {
-    bundle.write( { format: 'es6', dest: `dist/${ name }.es6.js` } )
+    bundle.write( { format: 'es', dest: `dist/${ name }.es.js` } )
     bundle.write( { format: 'amd', dest: `dist/${ name }.amd.js` } )
     bundle.write( {
         format: 'iife',
