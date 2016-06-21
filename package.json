@@ -1,6 +1,6 @@
 {
   "name": "obseriot",
-  "version": "0.1.111",
+  "version": "0.1.12",
   "main": "dist/obseriot.js",
   "jsnext:main": "src/obseriot.js",
   "scripts": {
