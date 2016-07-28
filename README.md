@@ -43,7 +43,7 @@ obseriot.listen( url.change, function ( ...arg ) {
 obseriot.notify( url.change, 'shop', 1, 'detail' )
 ```
 
-# How to use like a Flux
+# How to use like Flux
 
 Define Action
 
@@ -100,7 +100,7 @@ import obseriot from 'obseriot'
 // Action in somewhere components
 obseriot.notify( action.increment, 1 )
 
-// Listen to the Store update
+// Listen to Store update
 obseriot.listen( store.count, ( newCount ) => {
     console.log( newCount ) // => 1
 } )
