@@ -42,3 +42,66 @@ obseriot.listen( url.change, function ( ...arg ) {
 // obseriot.notify( event object , parameters )
 obseriot.notify( url.change, 'shop', 1, 'detail' )
 ```
+
+# How to use like a Flux
+
+Define Action
+
+```js
+var action = {}
+export default action
+```
+```js
+import action from 'action'
+
+action.increment = {
+    handler : {
+        name : 'action_increment',
+        action : function ( num = 1 ) {
+            return [ num ]
+        }
+    }
+}
+```
+
+Define Store
+
+```js
+var store = {}
+export default store
+```
+```js
+import store from 'store'
+import obseriot from 'obseriot'
+
+store.count = {
+    data : 0,
+    handler : {
+        name : 'store_count',
+        action : function () {
+            return [ store.count.data ]
+        }
+    }
+}
+
+obseriot.listen( action.increment, function ( num ) {
+    store.count.data = store.count.data + num
+    obseriot.notify( store.count )
+} )
+```
+
+Your Component
+
+```js
+import action from 'action'
+import store from 'store'
+import obseriot from 'obseriot'
+
+// Action in somewhere components
+obseriot.notify( action.increment, 1 )
+
+// Listen to the Store update
+obseriot.listen( store.count, ( newCount ) => {
+    console.log( newCount ) // => 1
+} )
+```
