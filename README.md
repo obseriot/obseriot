@@ -75,17 +75,17 @@ import store from 'store'
 import obseriot from 'obseriot'
 
 store.count = {
-    data : 0,
+    state : 0,
     handler : {
         name : 'store_count',
         action : function () {
-            return [ store.count.data ]
+            return [ store.count.state ]
         }
     }
 }
 
 obseriot.listen( action.increment, function ( num ) {
-    store.count.data = store.count.data + num
+    store.count.state = store.count.state + num
     obseriot.notify( store.count )
 } )
 ```
