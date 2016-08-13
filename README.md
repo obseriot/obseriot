@@ -105,3 +105,25 @@ obseriot.listen( store.count, ( newCount ) => {
     console.log( newCount ) // => 1
 } )
 ```
+
+## Naming hint
+
+All objects. You can name the simpler than Flux and Redux.
+
+For example, common Todo action ...
+
+```
+addTodo
+deleteTodo
+editTodo... 😥
+```
+
+In Obseriot ...
+
+```
+action.todo.add
+action.todo.delete
+action.todo.edit
+```
+
+It will be simple! 😆
