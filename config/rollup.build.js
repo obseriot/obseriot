@@ -15,7 +15,7 @@ rollup
     bundle.write( { format: 'es', dest: `dist/${ name }.es.js` } )
     bundle.write( { format: 'amd', dest: `dist/${ name }.amd.js` } )
     bundle.write( {
-        format: 'iife',
+        format: 'umd',
         dest: `dist/${ name }.js`,
         moduleName: name
     } )

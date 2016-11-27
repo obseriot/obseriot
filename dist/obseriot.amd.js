@@ -1,181 +1,152 @@
 define(function () { 'use strict';
 
-  var observable = function(el) {
+var observable = function(el) {
 
+  /**
+   * Extend the original object or create a new empty one
+   * @type { Object }
+   */
+
+  el = el || {};
+
+  /**
+   * Private variables
+   */
+  var callbacks = {},
+    slice = Array.prototype.slice;
+
+  /**
+   * Public Api
+   */
+
+  // extend the el object adding the observable methods
+  Object.defineProperties(el, {
     /**
-     * Extend the original object or create a new empty one
-     * @type { Object }
+     * Listen to the given `event` ands
+     * execute the `callback` each time an event is triggered.
+     * @param  { String } event - event id
+     * @param  { Function } fn - callback function
+     * @returns { Object } el
      */
-
-    el = el || {}
-
-    /**
-     * Private variables
-     */
-    var callbacks = {},
-      slice = Array.prototype.slice
-
-    /**
-     * Private Methods
-     */
-
-    /**
-     * Helper function needed to get and loop all the events in a string
-     * @param   { String }   e - event string
-     * @param   {Function}   fn - callback
-     */
-    function onEachEvent(e, fn) {
-      var es = e.split(' '), l = es.length, i = 0, name, indx
-      for (; i < l; i++) {
-        name = es[i]
-        indx = name.indexOf('.')
-        if (name) fn( ~indx ? name.substring(0, indx) : name, i, ~indx ? name.slice(indx + 1) : null)
-      }
-    }
-
-    /**
-     * Public Api
-     */
-
-    // extend the el object adding the observable methods
-    Object.defineProperties(el, {
-      /**
-       * Listen to the given space separated list of `events` and
-       * execute the `callback` each time an event is triggered.
-       * @param  { String } events - events ids
-       * @param  { Function } fn - callback function
-       * @returns { Object } el
-       */
-      on: {
-        value: function(events, fn) {
-          if (typeof fn != 'function')  return el
-
-          onEachEvent(events, function(name, pos, ns) {
-            (callbacks[name] = callbacks[name] || []).push(fn)
-            fn.typed = pos > 0
-            fn.ns = ns
-          })
-
-          return el
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
+    on: {
+      value: function(event, fn) {
+        if (typeof fn == 'function')
+          { (callbacks[event] = callbacks[event] || []).push(fn); }
+        return el
       },
+      enumerable: false,
+      writable: false,
+      configurable: false
+    },
 
-      /**
-       * Removes the given space separated list of `events` listeners
-       * @param   { String } events - events ids
-       * @param   { Function } fn - callback function
-       * @returns { Object } el
-       */
-      off: {
-        value: function(events, fn) {
-          if (events == '*' && !fn) callbacks = {}
-          else {
-            onEachEvent(events, function(name, pos, ns) {
-              if (fn || ns) {
-                var arr = callbacks[name]
-                for (var i = 0, cb; cb = arr && arr[i]; ++i) {
-                  if (cb == fn || ns && cb.ns == ns) arr.splice(i--, 1)
-                }
-              } else delete callbacks[name]
-            })
-          }
-          return el
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
-      },
-
-      /**
-       * Listen to the given space separated list of `events` and
-       * execute the `callback` at most once
-       * @param   { String } events - events ids
-       * @param   { Function } fn - callback function
-       * @returns { Object } el
-       */
-      one: {
-        value: function(events, fn) {
-          function on() {
-            el.off(events, on)
-            fn.apply(el, arguments)
-          }
-          return el.on(events, on)
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
-      },
-
-      /**
-       * Execute all callback functions that listen to
-       * the given space separated list of `events`
-       * @param   { String } events - events ids
-       * @returns { Object } el
-       */
-      trigger: {
-        value: function(events) {
-          var arguments$1 = arguments;
-
-
-          // getting the arguments
-          var arglen = arguments.length - 1,
-            args = new Array(arglen),
-            fns
-
-          for (var i = 0; i < arglen; i++) {
-            args[i] = arguments$1[i + 1] // skip first argument
-          }
-
-          onEachEvent(events, function(name, pos, ns) {
-
-            fns = slice.call(callbacks[name] || [], 0)
-
-            for (var i = 0, fn; fn = fns[i]; ++i) {
-              if (!ns || fn.ns == ns) fn.apply(el, fn.typed ? [name].concat(args) : args)
-              if (fns[i] !== fn) { i-- }
+    /**
+     * Removes the given `event` listeners
+     * @param   { String } event - event id
+     * @param   { Function } fn - callback function
+     * @returns { Object } el
+     */
+    off: {
+      value: function(event, fn) {
+        if (event == '*' && !fn) { callbacks = {}; }
+        else {
+          if (fn) {
+            var arr = callbacks[event];
+            for (var i = 0, cb; cb = arr && arr[i]; ++i) {
+              if (cb == fn) { arr.splice(i--, 1); }
             }
+          } else { delete callbacks[event]; }
+        }
+        return el
+      },
+      enumerable: false,
+      writable: false,
+      configurable: false
+    },
 
-            if (callbacks['*'] && name != '*')
-              el.trigger.apply(el, ['*', name].concat(args))
+    /**
+     * Listen to the given `event` and
+     * execute the `callback` at most once
+     * @param   { String } event - event id
+     * @param   { Function } fn - callback function
+     * @returns { Object } el
+     */
+    one: {
+      value: function(event, fn) {
+        function on() {
+          el.off(event, on);
+          fn.apply(el, arguments);
+        }
+        return el.on(event, on)
+      },
+      enumerable: false,
+      writable: false,
+      configurable: false
+    },
 
-          })
+    /**
+     * Execute all callback functions that listen to
+     * the given `event`
+     * @param   { String } event - event id
+     * @returns { Object } el
+     */
+    trigger: {
+      value: function(event) {
+        var arguments$1 = arguments;
 
-          return el
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
-      }
-    })
 
-    return el
+        // getting the arguments
+        var arglen = arguments.length - 1,
+          args = new Array(arglen),
+          fns,
+          fn,
+          i;
 
-  }
+        for (i = 0; i < arglen; i++) {
+          args[i] = arguments$1[i + 1]; // skip first argument
+        }
 
-  var obseriot = new function () {
-      observable( this )
-  }
+        fns = slice.call(callbacks[event] || [], 0);
 
-  obseriot.listen = function ( e, cb ) {
-      if ( ! e.handler ) return
-      this.on( e.handler.name, cb )
-  }
+        for (i = 0; fn = fns[i]; ++i) {
+          fn.apply(el, args);
+        }
 
-  obseriot.notify = function ( e ) {
-      var arg = [], len = arguments.length - 1;
-      while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
+        if (callbacks['*'] && event != '*')
+          { el.trigger.apply(el, ['*', event].concat(args)); }
 
-      if ( ! e.handler ) return
-      var t = [ e.handler.name ],
-      f = e.handler.action.apply( this, arg )
-      if ( f.constructor.name !== 'Array' ) f = [ f ]
-      Array.prototype.push.apply( t, f )
-      this.trigger.apply( this, t )
-  }
+        return el
+      },
+      enumerable: false,
+      writable: false,
+      configurable: false
+    }
+  });
 
-  return obseriot;
+  return el
+
+};
+
+var obseriot = new function () {
+    observable( this );
+};
+
+obseriot.listen = function ( e, cb ) {
+    if ( ! e.handler ) { return }
+    this.on( e.handler.name, cb );
+};
+
+obseriot.notify = function ( e ) {
+    var arg = [], len = arguments.length - 1;
+    while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
+
+    if ( ! e.handler ) { return }
+    var t = [ e.handler.name ],
+    f = e.handler.action.apply( this, arg );
+    if ( f.constructor.name !== 'Array' ) { f = [ f ]; }
+    Array.prototype.push.apply( t, f );
+    this.trigger.apply( this, t );
+};
+
+return obseriot;
 
 });

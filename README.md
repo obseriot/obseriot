@@ -1,6 +1,6 @@
 Simple observer pattern
 
-# Installation
+# Install
 
 ```
 npm install obseriot
