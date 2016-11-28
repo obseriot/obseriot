@@ -147,6 +147,11 @@ obseriot.notify = function ( e ) {
     this.trigger.apply( this, t );
 };
 
+obseriot.once = function ( e, cb ) {
+    if ( ! e.handler ) { return }
+    this.one( e.handler.name, cb );
+};
+
 obseriot.remove = function ( e, cb ) {
     if ( ! e.handler ) { return }
     var t = [ e.handler.name ];

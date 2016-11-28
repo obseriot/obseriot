@@ -18,6 +18,11 @@ obseriot.notify = function ( e, ...arg ) {
     this.trigger.apply( this, t )
 }
 
+obseriot.once = function ( e, cb ) {
+    if ( ! e.handler ) return
+    this.one( e.handler.name, cb )
+}
+
 obseriot.remove = function ( e, cb ) {
     if ( ! e.handler ) return
     let t = [ e.handler.name ]

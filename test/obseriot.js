@@ -43,6 +43,14 @@ var test = {
             }
         }
     },
+    once : {
+        handler : {
+            name : 'once',
+            action : function () {
+                return true
+            }
+        }
+    },
     off : {
         handler : {
             name : 'off',
@@ -91,6 +99,17 @@ describe( 'obseriot specs', function () {
         obseriot.notify( test.string )
         obseriot.notify( test.object )
         obseriot.notify( test.function )
+    } )
+
+    it( 'Call the listener only once', function () {
+        var count = 0
+        obseriot.once( test.once, function () {
+            count++
+        } )
+        obseriot.notify( test.once )
+        obseriot.notify( test.once )
+
+        expect( count ).to.be( 1 )
     } )
 
     it( 'Remove all listeners', function () {

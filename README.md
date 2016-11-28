@@ -43,6 +43,15 @@ obseriot.listen( url.change, function ( ...arg ) {
 obseriot.notify( url.change, 'shop', 1, 'detail' )
 ```
 
+One time listener
+
+```js
+// obseriot.once( event object , callback function )
+obseriot.once( url.change, function ( ...arg ) {
+    console.log( arg )
+} )
+```
+
 ## Remove listeners
 
 Remove all registered listeners.
