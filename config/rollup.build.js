@@ -1,7 +1,7 @@
 const rollup = require( 'rollup' ),
-npm = require( 'rollup-plugin-node-resolve' ),
-buble = require( 'rollup-plugin-buble' )
-name = 'obseriot'
+    npm = require( 'rollup-plugin-node-resolve' ),
+    buble = require( 'rollup-plugin-buble' ),
+    name = 'obseriot'
 
 rollup
 .rollup( {
