@@ -141,10 +141,17 @@ obseriot.notify = function ( e ) {
 
     if ( ! e.handler ) { return }
     var t = [ e.handler.name ],
-    f = e.handler.action.apply( this, arg );
+        f = e.handler.action.apply( this, arg );
     if ( f.constructor.name !== 'Array' ) { f = [ f ]; }
     Array.prototype.push.apply( t, f );
     this.trigger.apply( this, t );
+};
+
+obseriot.remove = function ( e, cb ) {
+    if ( ! e.handler ) { return }
+    var t = [ e.handler.name ];
+    if ( cb ) { t.push( cb ); }
+    this.off.apply( this, t );
 };
 
 return obseriot;

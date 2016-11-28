@@ -20,7 +20,7 @@ var test = {
         handler : {
             name : 'string',
             equal : 'string',
-            action : function ( arg ) {
+            action : function () {
                 return test.string.handler.equal
             }
         }
@@ -29,7 +29,7 @@ var test = {
         handler : {
             name : 'object',
             equal : { item : 'object' },
-            action : function ( arg ) {
+            action : function () {
                 return test.object.handler.equal
             }
         }
@@ -38,8 +38,16 @@ var test = {
         handler : {
             name : 'function',
             equal : function () { return 'function' },
-            action : function ( arg ) {
+            action : function () {
                 return test.function.handler.equal
+            }
+        }
+    },
+    off : {
+        handler : {
+            name : 'off',
+            action : function () {
+                return true
             }
         }
     }
@@ -83,6 +91,38 @@ describe( 'obseriot specs', function () {
         obseriot.notify( test.string )
         obseriot.notify( test.object )
         obseriot.notify( test.function )
+    } )
+
+    it( 'Remove all listeners', function () {
+        var count = 0
+        obseriot.listen( test.off, function () {
+            count++
+        } )
+        obseriot.listen( test.off, function () {
+            count++
+        } )
+        obseriot.notify( test.off )
+        obseriot.remove( test.off )
+        obseriot.notify( test.off )
+
+        expect( count ).to.be( 2 )
+    } )
+
+    it( 'Remove one listener', function () {
+        var count = 0,
+            countUpFirst = function () {
+                count++
+            },
+            countUpSecond = function () {
+                count++
+            }
+        obseriot.listen( test.off, countUpFirst )
+        obseriot.listen( test.off, countUpSecond )
+        obseriot.notify( test.off )
+        obseriot.remove( test.off, countUpFirst )
+        obseriot.notify( test.off )
+
+        expect( count ).to.be( 3 )
     } )
 
 } )

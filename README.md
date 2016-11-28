@@ -43,6 +43,27 @@ obseriot.listen( url.change, function ( ...arg ) {
 obseriot.notify( url.change, 'shop', 1, 'detail' )
 ```
 
+## Remove listeners
+
+Remove all registered listeners.
+
+```js
+// obseriot.remove( event object )
+obseriot.remove( url.change )
+```
+
+Remove one registered listener.
+
+```js
+// obseriot.remove( event object, callback function )
+
+var callback = function ( ...arg ) {
+    console.log( arg )
+}
+obseriot.listen( url.change, callback ) // Listen to the named function.
+obseriot.remove( url.change, callback ) // Remove!
+```
+
 # How to use like Flux
 
 Define Action
