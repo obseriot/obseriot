@@ -126,38 +126,61 @@ var observable = function(el) {
 
 };
 
-var obseriot = new function () {
-    observable( this );
-};
+var o = new function () {
+        observable( this );
+    };
+var obseriot = {};
 
-obseriot.listen = function ( e, cb ) {
-    if ( ! e.handler ) { return }
-    this.on( e.handler.name, cb );
-};
+Object.defineProperties( obseriot, {
+    observable: {
+        value: o
+    },
+    listen: {
+        value: function ( e, cb ) {
+            if ( ! e.handler ) { return }
+            o.on( e.handler.name, cb );
+        },
+        enumerable: false,
+        writable: false,
+        configurable: false
+    },
+    notify: {
+        value: function ( e ) {
+            var arg = [], len = arguments.length - 1;
+            while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
 
-obseriot.notify = function ( e ) {
-    var arg = [], len = arguments.length - 1;
-    while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
-
-    if ( ! e.handler ) { return }
-    var t = [ e.handler.name ],
-        f = e.handler.action.apply( this, arg );
-    if ( f.constructor.name !== 'Array' ) { f = [ f ]; }
-    Array.prototype.push.apply( t, f );
-    this.trigger.apply( this, t );
-};
-
-obseriot.once = function ( e, cb ) {
-    if ( ! e.handler ) { return }
-    this.one( e.handler.name, cb );
-};
-
-obseriot.remove = function ( e, cb ) {
-    if ( ! e.handler ) { return }
-    var t = [ e.handler.name ];
-    if ( cb ) { t.push( cb ); }
-    this.off.apply( this, t );
-};
+            if ( ! e.handler ) { return }
+            var t = [ e.handler.name ],
+                f = e.handler.action.apply( this, arg );
+            if ( f.constructor.name !== 'Array' ) { f = [ f ]; }
+            Array.prototype.push.apply( t, f );
+            o.trigger.apply( this, t );
+        },
+        enumerable: false,
+        writable: false,
+        configurable: false
+    },
+    once: {
+        value: function ( e, cb ) {
+            if ( ! e.handler ) { return }
+            o.one( e.handler.name, cb );
+        },
+        enumerable: false,
+        writable: false,
+        configurable: false
+    },
+    remove: {
+        value: function ( e, cb ) {
+            if ( ! e.handler ) { return }
+            var t = [ e.handler.name ];
+            if ( cb ) { t.push( cb ); }
+            o.off.apply( this, t );
+        },
+        enumerable: false,
+        writable: false,
+        configurable: false
+    }
+} );
 
 return obseriot;
 
