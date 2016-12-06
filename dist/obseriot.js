@@ -141,7 +141,9 @@ Object.defineProperties( obseriot, {
     },
     listen: {
         value: function ( e, cb ) {
-            if ( ! e.handler ) { return }
+            if ( e === void 0 ) e = {};
+
+            if ( ! ( 'handler' in e ) ) { return }
             o.on( e.handler.name, cb );
         },
         enumerable: false,
@@ -153,7 +155,8 @@ Object.defineProperties( obseriot, {
             var arg = [], len = arguments.length - 1;
             while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
 
-            if ( ! e.handler ) { return }
+            if ( e === void 0 ) e = {};
+            if ( ! ( 'handler' in e ) ) { return }
             var t = [ e.handler.name ],
                 f = e.handler.action.apply( this, arg );
             if ( f.constructor.name !== 'Array' ) { f = [ f ]; }
@@ -166,7 +169,9 @@ Object.defineProperties( obseriot, {
     },
     once: {
         value: function ( e, cb ) {
-            if ( ! e.handler ) { return }
+            if ( e === void 0 ) e = {};
+
+            if ( ! ( 'handler' in e ) ) { return }
             o.one( e.handler.name, cb );
         },
         enumerable: false,
@@ -175,7 +180,9 @@ Object.defineProperties( obseriot, {
     },
     remove: {
         value: function ( e, cb ) {
-            if ( ! e.handler ) { return }
+            if ( e === void 0 ) e = {};
+
+            if ( ! ( 'handler' in e ) ) { return }
             var t = [ e.handler.name ];
             if ( cb ) { t.push( cb ); }
             o.off.apply( this, t );
