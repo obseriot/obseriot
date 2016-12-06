@@ -5,7 +5,7 @@
   "jsnext:main": "src/obseriot.js",
   "scripts": {
     "test": "karma start config/karma.conf.js && mocha",
-    "build": "node config/rollup.build.js"
+    "build": "eslint src && node config/rollup.build.js"
   },
   "author": "aggre",
   "license": "MIT",
