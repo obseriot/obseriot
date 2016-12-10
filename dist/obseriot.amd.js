@@ -155,7 +155,7 @@ Object.defineProperties( obseriot, {
             if ( ! ( 'handler' in e ) ) { return }
             var t = [ e.handler.name ],
                 f = e.handler.action.apply( this, arg );
-            if ( f.constructor.name !== 'Array' ) { f = [ f ]; }
+            if ( ! Array.isArray( f ) ) { f = [ f ]; }
             Array.prototype.push.apply( t, f );
             o.trigger.apply( this, t );
         },
