@@ -136,9 +136,6 @@ var o = new function () {
 var obseriot = {};
 
 Object.defineProperties( obseriot, {
-    observable: {
-        value: o
-    },
     listen: {
         value: function ( e, cb ) {
             if ( e === void 0 ) e = {};
@@ -190,6 +187,9 @@ Object.defineProperties( obseriot, {
         enumerable: false,
         writable: false,
         configurable: false
+    },
+    raw: {
+        value: o
     }
 } );
 

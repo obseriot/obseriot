@@ -6,9 +6,6 @@ var o = new function () {
     obseriot = {}
 
 Object.defineProperties( obseriot, {
-    observable: {
-        value: o
-    },
     listen: {
         value: function ( e = {}, cb ) {
             if ( ! ( 'handler' in e ) ) return
@@ -50,6 +47,9 @@ Object.defineProperties( obseriot, {
         enumerable: false,
         writable: false,
         configurable: false
+    },
+    raw: {
+        value: o
     }
 } )
 
