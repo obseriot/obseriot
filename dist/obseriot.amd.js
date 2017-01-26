@@ -127,66 +127,77 @@ var observable = function(el) {
 };
 
 var o = new function () {
-        observable( this );
-    };
-var obseriot = {};
+	observable( this );
+}();
 
-Object.defineProperties( obseriot, {
-    observable: {
-        value: o
-    },
-    listen: {
-        value: function ( e, cb ) {
-            if ( e === void 0 ) e = {};
+var obseriot = Object.defineProperties( {}, {
+	observable: {
+		value: o
+	},
+	listen: {
+		value: function ( e, cb ) {
+			if ( e === void 0 ) e = {};
 
-            if ( ! ( 'handler' in e ) ) { return }
-            o.on( e.handler.name, cb );
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
-    },
-    notify: {
-        value: function ( e ) {
-            var arg = [], len = arguments.length - 1;
-            while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
+			if ( !( 'handler' in e ) ) {
+				return
+			}
+			o.on( e.handler.name, cb );
+		},
+		enumerable: false,
+		writable: false,
+		configurable: false
+	},
+	notify: {
+		value: function ( e ) {
+			var arg = [], len = arguments.length - 1;
+			while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
 
-            if ( e === void 0 ) e = {};
-            if ( ! ( 'handler' in e ) ) { return }
-            var t = [ e.handler.name ],
-                f = e.handler.action.apply( this, arg );
-            if ( ! Array.isArray( f ) ) { f = [ f ]; }
-            Array.prototype.push.apply( t, f );
-            o.trigger.apply( this, t );
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
-    },
-    once: {
-        value: function ( e, cb ) {
-            if ( e === void 0 ) e = {};
+			if ( e === void 0 ) e = {};
+			if ( !( 'handler' in e ) ) {
+				return
+			}
+			var t = [ e.handler.name ];
+			var f = e.handler.action.apply( this, arg );
+			if ( !Array.isArray( f ) ) {
+				f = [ f ];
+			}
+			Array.prototype.push.apply( t, f );
+			o.trigger.apply( this, t );
+		},
+		enumerable: false,
+		writable: false,
+		configurable: false
+	},
+	once: {
+		value: function ( e, cb ) {
+			if ( e === void 0 ) e = {};
 
-            if ( ! ( 'handler' in e ) ) { return }
-            o.one( e.handler.name, cb );
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
-    },
-    remove: {
-        value: function ( e, cb ) {
-            if ( e === void 0 ) e = {};
+			if ( !( 'handler' in e ) ) {
+				return
+			}
+			o.one( e.handler.name, cb );
+		},
+		enumerable: false,
+		writable: false,
+		configurable: false
+	},
+	remove: {
+		value: function ( e, cb ) {
+			if ( e === void 0 ) e = {};
 
-            if ( ! ( 'handler' in e ) ) { return }
-            var t = [ e.handler.name ];
-            if ( cb ) { t.push( cb ); }
-            o.off.apply( this, t );
-        },
-        enumerable: false,
-        writable: false,
-        configurable: false
-    }
+			if ( !( 'handler' in e ) ) {
+				return
+			}
+			var t = [ e.handler.name ];
+			if ( cb ) {
+				t.push( cb );
+			}
+			o.off.apply( this, t );
+		},
+		enumerable: false,
+		writable: false,
+		configurable: false
+	}
 } );
 
 return obseriot;
