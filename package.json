@@ -30,12 +30,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/aggre/obseriot.git"
+    "url": "git+https://github.com/obseriot/obseriot.git"
   },
   "bugs": {
-    "url": "https://gitlab.com/aggre/obseriot/issues"
+    "url": "https://github.com/obseriot/obseriot/issues"
   },
-  "homepage": "https://gitlab.com/aggre/obseriot#README",
+  "homepage": "https://github.com/obseriot/obseriot",
   "description": "Simple observer pattern",
   "xo": {
     "envs": [
