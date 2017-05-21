@@ -24,13 +24,12 @@ const obseriot = Object.defineProperties( {}, {
 			if ( !( 'handler' in e ) ) {
 				return
 			}
-			const t = [ e.handler.name ]
-			let f = e.handler.action.apply( this, arg )
+			let f = e.handler.action( ...arg )
 			if ( !Array.isArray( f ) ) {
 				f = [ f ]
 			}
-			Array.prototype.push.apply( t, f )
-			o.trigger.apply( this, t )
+			const t = [ e.handler.name, ...f ]
+			o.trigger( ...t )
 		},
 		enumerable: false,
 		writable: false,
@@ -56,7 +55,7 @@ const obseriot = Object.defineProperties( {}, {
 			if ( cb ) {
 				t.push( cb )
 			}
-			o.off.apply( this, t )
+			o.off( ...t )
 		},
 		enumerable: false,
 		writable: false,

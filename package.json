@@ -70,9 +70,10 @@
     "overrides": [
       {
         "files": "test/*.js",
-        "rules": {
-          "block-scoped-var": 0
-        }
+        "globals": [
+          "expect",
+          "obseriot"
+        ]
       }
     ],
     "semicolon": false

@@ -154,13 +154,13 @@ var obseriot = Object.defineProperties( {}, {
 			if ( !( 'handler' in e ) ) {
 				return
 			}
-			var t = [ e.handler.name ];
-			var f = e.handler.action.apply( this, arg );
+			var f = (ref = e.handler).action.apply( ref, arg );
 			if ( !Array.isArray( f ) ) {
 				f = [ f ];
 			}
-			Array.prototype.push.apply( t, f );
-			o.trigger.apply( this, t );
+			var t = [ e.handler.name ].concat( f );
+			o.trigger.apply( o, t );
+			var ref;
 		},
 		enumerable: false,
 		writable: false,
@@ -190,7 +190,7 @@ var obseriot = Object.defineProperties( {}, {
 			if ( cb ) {
 				t.push( cb );
 			}
-			o.off.apply( this, t );
+			o.off.apply( o, t );
 		},
 		enumerable: false,
 		writable: false,
