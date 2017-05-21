@@ -135,7 +135,7 @@ var obseriot = Object.defineProperties( {}, {
 		value: o
 	},
 	listen: {
-		value: function ( e, cb ) {
+		value: function value ( e, cb ) {
 			if ( e === void 0 ) e = {};
 
 			if ( !( 'handler' in e ) ) {
@@ -148,7 +148,7 @@ var obseriot = Object.defineProperties( {}, {
 		configurable: false
 	},
 	notify: {
-		value: function ( e ) {
+		value: function value ( e ) {
 			var arg = [], len = arguments.length - 1;
 			while ( len-- > 0 ) arg[ len ] = arguments[ len + 1 ];
 
@@ -169,7 +169,7 @@ var obseriot = Object.defineProperties( {}, {
 		configurable: false
 	},
 	once: {
-		value: function ( e, cb ) {
+		value: function value ( e, cb ) {
 			if ( e === void 0 ) e = {};
 
 			if ( !( 'handler' in e ) ) {
@@ -182,7 +182,7 @@ var obseriot = Object.defineProperties( {}, {
 		configurable: false
 	},
 	remove: {
-		value: function ( e, cb ) {
+		value: function value ( e, cb ) {
 			if ( e === void 0 ) e = {};
 
 			if ( !( 'handler' in e ) ) {
