@@ -9,7 +9,7 @@ const obseriot = Object.defineProperties( {}, {
 		value: o
 	},
 	listen: {
-		value: function ( e = {}, cb ) {
+		value ( e = {}, cb ) {
 			if ( !( 'handler' in e ) ) {
 				return
 			}
@@ -20,11 +20,11 @@ const obseriot = Object.defineProperties( {}, {
 		configurable: false
 	},
 	notify: {
-		value: function ( e = {}, ...arg ) {
+		value ( e = {}, ...arg ) {
 			if ( !( 'handler' in e ) ) {
 				return
 			}
-			let t = [ e.handler.name ]
+			const t = [ e.handler.name ]
 			let f = e.handler.action.apply( this, arg )
 			if ( !Array.isArray( f ) ) {
 				f = [ f ]
@@ -37,7 +37,7 @@ const obseriot = Object.defineProperties( {}, {
 		configurable: false
 	},
 	once: {
-		value: function ( e = {}, cb ) {
+		value ( e = {}, cb ) {
 			if ( !( 'handler' in e ) ) {
 				return
 			}
@@ -48,11 +48,11 @@ const obseriot = Object.defineProperties( {}, {
 		configurable: false
 	},
 	remove: {
-		value: function ( e = {}, cb ) {
+		value ( e = {}, cb ) {
 			if ( !( 'handler' in e ) ) {
 				return
 			}
-			let t = [ e.handler.name ]
+			const t = [ e.handler.name ]
 			if ( cb ) {
 				t.push( cb )
 			}

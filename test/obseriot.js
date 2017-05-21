@@ -1,19 +1,14 @@
-if ( typeof global !== 'undefined' ) {
-	var expect = require( 'expect.js' )
-	var obseriot = require( '../dist/obseriot' )
-}
-
-var test = {
+const test = {
 	handler: {
 		name: 'test',
-		action: function () {
+		action () {
 			return [ 'This is a test' ]
 		}
 	},
 	formatting: {
 		handler: {
 			name: 'formatting',
-			action: function ( a1, a2, a3 ) {
+			action ( a1, a2, a3 ) {
 				return [ 'This is a test', a1, a2, a3 ]
 			}
 		}
@@ -22,7 +17,7 @@ var test = {
 		handler: {
 			name: 'string',
 			equal: 'string',
-			action: function () {
+			action () {
 				return test.string.handler.equal
 			}
 		}
@@ -31,7 +26,7 @@ var test = {
 		handler: {
 			name: 'object',
 			equal: { item: 'object' },
-			action: function () {
+			action () {
 				return test.object.handler.equal
 			}
 		}
@@ -39,10 +34,10 @@ var test = {
 	function: {
 		handler: {
 			name: 'function',
-			equal: function () {
+			equal () {
 				return 'function'
 			},
-			action: function () {
+			action () {
 				return test.function.handler.equal
 			}
 		}
@@ -50,7 +45,7 @@ var test = {
 	once: {
 		handler: {
 			name: 'once',
-			action: function () {
+			action () {
 				return true
 			}
 		}
@@ -58,25 +53,25 @@ var test = {
 	off: {
 		handler: {
 			name: 'off',
-			action: function () {
+			action () {
 				return true
 			}
 		}
 	}
 }
 
-describe( 'obseriot specs', function () {
-	it( 'Observe by object', function ( done ) {
-		obseriot.listen( test, function ( arg ) {
+describe( 'obseriot specs', () => {
+	it( 'Observe by object', done => {
+		obseriot.listen( test, arg => {
 			expect( arg ).to.be.ok()
 			done()
 		} )
 		obseriot.notify( test )
 	} )
 
-	it( 'Formatting of argument', function ( done ) {
-		var args = [ 'test', 2, [ 3 ], { test: 5 } ]
-		obseriot.listen( test.formatting, function ( f, a1, a2, a3 ) {
+	it( 'Formatting of argument', done => {
+		const args = [ 'test', 2, [ 3 ], { test: 5 } ]
+		obseriot.listen( test.formatting, ( f, a1, a2, a3 ) => {
 			expect( f ).to.eql( 'This is a test' )
 			expect( a1 ).to.eql( args[ 0 ] )
 			expect( a2 ).to.eql( args[ 1 ] )
@@ -86,14 +81,14 @@ describe( 'obseriot specs', function () {
 		obseriot.notify( test.formatting, args[ 0 ], args[ 1 ], args[ 2 ] )
 	} )
 
-	it( 'Action returns value is whatever fine', function ( done ) {
-		obseriot.listen( test.string, function ( arg ) {
+	it( 'Action returns value is whatever fine', done => {
+		obseriot.listen( test.string, arg => {
 			expect( arg ).to.eql( test.string.handler.equal )
 		} )
-		obseriot.listen( test.object, function ( arg ) {
+		obseriot.listen( test.object, arg => {
 			expect( arg ).to.eql( test.object.handler.equal )
 		} )
-		obseriot.listen( test.function, function ( arg ) {
+		obseriot.listen( test.function, arg => {
 			expect( arg ).to.eql( test.function.handler.equal )
 			done()
 		} )
@@ -102,9 +97,9 @@ describe( 'obseriot specs', function () {
 		obseriot.notify( test.function )
 	} )
 
-	it( 'Call the listener only once', function () {
-		var count = 0
-		obseriot.once( test.once, function () {
+	it( 'Call the listener only once', () => {
+		let count = 0
+		obseriot.once( test.once, () => {
 			count++
 		} )
 		obseriot.notify( test.once )
@@ -113,12 +108,12 @@ describe( 'obseriot specs', function () {
 		expect( count ).to.be( 1 )
 	} )
 
-	it( 'Remove all listeners', function () {
-		var count = 0
-		obseriot.listen( test.off, function () {
+	it( 'Remove all listeners', () => {
+		let count = 0
+		obseriot.listen( test.off, () => {
 			count++
 		} )
-		obseriot.listen( test.off, function () {
+		obseriot.listen( test.off, () => {
 			count++
 		} )
 		obseriot.notify( test.off )
@@ -128,12 +123,12 @@ describe( 'obseriot specs', function () {
 		expect( count ).to.be( 2 )
 	} )
 
-	it( 'Remove one listener', function () {
-		var count = 0
-		var countUpFirst = function () {
+	it( 'Remove one listener', () => {
+		let count = 0
+		const countUpFirst = function () {
 			count++
 		}
-		var countUpSecond = function () {
+		const countUpSecond = function () {
 			count++
 		}
 		obseriot.listen( test.off, countUpFirst )
