@@ -18,14 +18,12 @@ Object with a `handler.name` and `handler.action` .
   - Can be provide a variety of types. String, Object, Function, whatever
 
 ```js
-var url = {
-    change : {
-        handler : {
-            name : 'url_change',
-            action : function ( collection, id, action ) {
-                // Some processing and formatting
-                return [ collection, id, action ]
-            }
+const urlChange = {
+    handler: {
+        name: 'url_change',
+        action ( collection, id, action ) {
+            // Some processing and formatting
+            return [ collection, id, action ]
         }
     }
 }
@@ -35,19 +33,19 @@ var url = {
 
 ```js
 // obseriot.listen( event object , callback function )
-obseriot.listen( url.change, function ( ...arg ) {
+obseriot.listen( urlChange, ( ...arg ) => {
     console.log( arg ) // => 'shop', 1, 'detail'
 } )
 
 // obseriot.notify( event object , parameters )
-obseriot.notify( url.change, 'shop', 1, 'detail' )
+obseriot.notify( urlChange, 'shop', 1, 'detail' )
 ```
 
 One time listener
 
 ```js
 // obseriot.once( event object , callback function )
-obseriot.once( url.change, function ( ...arg ) {
+obseriot.once( urlChange, ( ...arg ) => {
     console.log( arg )
 } )
 ```
@@ -58,19 +56,18 @@ Remove all registered listeners.
 
 ```js
 // obseriot.remove( event object )
-obseriot.remove( url.change )
+obseriot.remove( urlChange )
 ```
 
 Remove one registered listener.
 
 ```js
 // obseriot.remove( event object, callback function )
-
-var callback = function ( ...arg ) {
+const callback = ( ...arg ) => {
     console.log( arg )
 }
-obseriot.listen( url.change, callback ) // Listen to the named function.
-obseriot.remove( url.change, callback ) // Remove!
+obseriot.listen( urlChange, callback ) // Listen to the named function.
+obseriot.remove( urlChange, callback ) // Remove!
 ```
 
 # How to use like Flux
@@ -78,16 +75,10 @@ obseriot.remove( url.change, callback ) // Remove!
 Define Action
 
 ```js
-var action = {}
-export default action
-```
-```js
-import action from 'action'
-
-action.increment = {
-    handler : {
-        name : 'action_increment',
-        action : function ( num = 1 ) {
+export const increment = {
+    handler: {
+        name: 'action_increment',
+        action ( num = 1 ) {
             return [ num ]
         }
     }
@@ -97,63 +88,37 @@ action.increment = {
 Define Store
 
 ```js
-var store = {}
-export default store
-```
-```js
-import store from 'store'
+import {increment} from './action/increment'
 import obseriot from 'obseriot'
 
-store.count = {
-    state : 0,
-    handler : {
-        name : 'store_count',
-        action : function () {
-            return [ store.count.state ]
+export const count = {
+    state: 0,
+    handler: {
+        name: 'store_count',
+        action () {
+            return [ count.state ]
         }
     }
 }
 
-obseriot.listen( action.increment, function ( num ) {
-    store.count.state = store.count.state + num
-    obseriot.notify( store.count )
+obseriot.listen( increment, num => {
+    count.state = count.state + num
+    obseriot.notify( count )
 } )
 ```
 
 Your Component
 
 ```js
-import action from 'action'
-import store from 'store'
+import {increment} from './action/increment'
+import {count} from './store/count'
 import obseriot from 'obseriot'
 
 // Action in somewhere components
-obseriot.notify( action.increment, 1 )
+obseriot.notify( increment, 1 )
 
 // Listen to Store update
-obseriot.listen( store.count, ( newCount ) => {
+obseriot.listen( count, newCount => {
     console.log( newCount ) // => 1
 } )
 ```
-
-## Naming hint
-
-All objects. You can name the simpler than Flux and Redux.
-
-For example, common Todo action ...
-
-```
-addTodo
-deleteTodo
-editTodo... 😥
-```
-
-In Obseriot ...
-
-```
-action.todo.add
-action.todo.delete
-action.todo.edit
-```
-
-It will be simple! 😆
